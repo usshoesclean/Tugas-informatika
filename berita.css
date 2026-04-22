@@ -1,0 +1,155 @@
+/* ==================== BERITA.CSS - Khusus Halaman Berita ==================== */
+
+/* Page Header */
+.page-header {
+  background: var(--primary);
+  color: white;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.page-header h1 {
+  color: white;
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
+}
+
+.page-header p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+}
+
+.back-button {
+  display: inline-block;
+  margin-top: 1rem;
+  color: var(--secondary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  color: white;
+  transform: translateX(-5px);
+}
+
+/* Grid Berita */
+.berita-full-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  padding: 3rem 0;
+}
+
+/* Kartu Berita */
+.berita-full-card {
+  background: var(--bg-white);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.berita-full-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Gambar Berita */
+.berita-full-card .berita-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.berita-full-card:hover .berita-img {
+  transform: scale(1.05);
+}
+
+/* Konten Kartu */
+.berita-full-card .card-content {
+  padding: 1.5rem;
+}
+
+/* Tanggal */
+.berita-full-card .berita-date {
+  font-size: 0.75rem;
+  color: var(--secondary);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Judul */
+.berita-full-card h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+/* Deskripsi */
+.berita-full-card p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* Tombol Baca */
+.berita-link {
+  color: var(--secondary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.berita-link:hover {
+  color: var(--primary);
+  gap: 10px;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 992px) {
+  .berita-full-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .page-header h1 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .berita-full-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .page-header {
+    padding: 2.5rem 0;
+  }
+  
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .berita-full-card .berita-img {
+    height: 180px;
+  }
+  
+  .berita-full-card .card-content {
+    padding: 1rem;
+  }
+  
+  .berita-full-card h3 {
+    font-size: 1rem;
+  }
+}
