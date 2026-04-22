@@ -1,12 +1,13 @@
+(function() {
+  'use strict';
+
   // ==================== 1. MOBILE MENU ====================
   const menuToggle = document.getElementById('menuToggle');
   const navMenu = document.getElementById('navMenu');
 
   if (menuToggle && navMenu) {
-    // Toggle menu saat tombol diklik
     menuToggle.addEventListener('click', () => {
       navMenu.classList.toggle('active');
-      // Ubah icon burger jadi X (opsional)
       const icon = menuToggle.querySelector('i');
       if (navMenu.classList.contains('active')) {
         icon.classList.remove('fa-bars');
@@ -17,7 +18,6 @@
       }
     });
 
-    // Tutup menu saat link diklik
     document.querySelectorAll('.nav-menu a').forEach(link => {
       link.addEventListener('click', () => {
         navMenu.classList.remove('active');
@@ -28,7 +28,7 @@
     });
   }
 
-  // ==================== 2. ACTIVE NAVIGATION ON SCROLL ====================
+  // ==================== 2. ACTIVE NAVIGATION ====================
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-menu a');
 
@@ -57,7 +57,7 @@
   window.addEventListener('scroll', updateActiveNav);
   window.addEventListener('load', updateActiveNav);
 
-  // ==================== 3. TESTIMONIAL SLIDER (Auto & Manual) ====================
+  // ==================== 3. TESTIMONIAL SLIDER ====================
   const track = document.getElementById('testimoniTrack');
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
@@ -94,7 +94,6 @@
       if (autoSlideInterval) clearInterval(autoSlideInterval);
     }
 
-    // Event listener tombol
     nextBtn.addEventListener('click', () => {
       nextSlide();
       stopAutoSlide();
@@ -115,27 +114,20 @@
       }, 10000);
     });
 
-    // Pause auto slide saat hover
     const slider = document.getElementById('testimoniSlider');
-    slider.addEventListener('mouseenter', () => {
-      isPlaying = false;
-    });
-    slider.addEventListener('mouseleave', () => {
-      isPlaying = true;
-    });
+    slider.addEventListener('mouseenter', () => { isPlaying = false; });
+    slider.addEventListener('mouseleave', () => { isPlaying = true; });
 
-    // Start auto slide
     startAutoSlide();
   }
 
-  // ==================== 4. CONTACT FORM (Validasi + Alert) ====================
+  // ==================== 4. CONTACT FORM ====================
   const contactForm = document.getElementById('contactForm');
 
   if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
       e.preventDefault();
       
-      // Validasi sederhana
       const name = contactForm.querySelector('input[placeholder="Nama Lengkap"]')?.value;
       const email = contactForm.querySelector('input[placeholder="Email"]')?.value;
       
@@ -149,29 +141,20 @@
         return;
       }
       
-      // Jika valid
       showNotification('✅ Terima kasih! Pesan Anda telah terkirim.', 'success');
       contactForm.reset();
     });
   }
 
-  // ==================== 5. NOTIFICATION SYSTEM (Toast) ====================
+  // ==================== 5. NOTIFICATION ====================
   function showNotification(message, type = 'info') {
-    // Hapus notifikasi lama jika ada
     const oldNotif = document.querySelector('.toast-notification');
     if (oldNotif) oldNotif.remove();
     
-    // Buat elemen notifikasi
     const notif = document.createElement('div');
     notif.className = `toast-notification ${type}`;
-    notif.innerHTML = `
-      <div class="toast-content">
-        <span class="toast-icon">${type === 'success' ? '✓' : '⚠'}</span>
-        <span class="toast-message">${message}</span>
-      </div>
-    `;
+    notif.innerHTML = `<div class="toast-content"><span class="toast-icon">${type === 'success' ? '✓' : '⚠'}</span><span class="toast-message">${message}</span></div>`;
     
-    // Styling notifikasi
     notif.style.cssText = `
       position: fixed;
       bottom: 20px;
@@ -190,39 +173,15 @@
     
     document.body.appendChild(notif);
     
-    // Auto hilang setelah 3 detik
     setTimeout(() => {
       notif.style.animation = 'slideOutRight 0.3s ease';
       setTimeout(() => notif.remove(), 300);
     }, 3000);
     
-    // Klik untuk hilang
     notif.addEventListener('click', () => notif.remove());
   }
 
-  // ==================== 6. SMOOTH SCROLL (Manual override untuk semua anchor) ====================
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const targetId = this.getAttribute('href');
-      
-      if (targetId === '#') return;
-      
-      const target = document.querySelector(targetId);
-      
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
-        
-        // Update URL tanpa reload (opsional)
-        history.pushState(null, null, targetId);
-      }
-    });
-  });
-
-  // ==================== 7. SCROLL TO TOP BUTTON (Fitur tambahan) ====================
+  // ==================== 6. SCROLL TO TOP ====================
   const createScrollTopButton = () => {
     const btn = document.createElement('button');
     btn.innerHTML = '<i class="fas fa-arrow-up"></i>';
@@ -265,42 +224,230 @@
   
   createScrollTopButton();
 
-  // ==================== 8. ADD CSS ANIMATIONS ====================
+  // ==================== 7. SCROLL REVEAL ANIMATION (FADE IN, SLIDE, SCALE) ====================
+  // Semua elemen yang akan dianimasi saat scroll
+  const animateElements = document.querySelectorAll('.section, .koleksi-item, .fasilitas-card, .info-card, .kontak-item, .card, .testimoni-item');
+  
+  // Tambah class awal untuk animasi
+  animateElements.forEach(el => {
+    el.classList.add('animate-on-scroll');
+  });
+  
+  function checkScroll() {
+    animateElements.forEach(el => {
+      const elementTop = el.getBoundingClientRect().top;
+      const windowHeight = window.innerHeight;
+      const triggerPoint = windowHeight - 100; // Muncul saat 100px sebelum masuk viewport
+      
+      if (elementTop < triggerPoint) {
+        el.classList.add('animated');
+      } else {
+        el.classList.remove('animated');
+      }
+    });
+    
+    // Efek parallax ringan pada hero
+    const hero = document.querySelector('.hero');
+    if (hero) {
+      const scrolled = window.pageYOffset;
+      hero.style.backgroundPositionY = scrolled * 0.5 + 'px';
+    }
+  }
+  
+  window.addEventListener('scroll', checkScroll);
+  window.addEventListener('load', checkScroll);
+  window.addEventListener('resize', checkScroll);
+
+  // ==================== 8. SMOOTH SCROLL ====================
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      
+      const target = document.querySelector(targetId);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+        history.pushState(null, null, targetId);
+      }
+    });
+  });
+
+  // ==================== 9. ADD CSS ANIMATIONS ====================
   const addAnimationStyles = () => {
     const style = document.createElement('style');
     style.textContent = `
+      /* Animasi Keyframes */
       @keyframes slideInRight {
-        from {
-          transform: translateX(100%);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
       }
       
       @keyframes slideOutRight {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+      }
+      
+      @keyframes fadeInUp {
         from {
-          transform: translateX(0);
-          opacity: 1;
+          opacity: 0;
+          transform: translateY(50px);
         }
         to {
-          transform: translateX(100%);
-          opacity: 0;
+          opacity: 1;
+          transform: translateY(0);
         }
       }
       
-      /* Fade in effect untuk section saat scroll */
-      .section {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.6s ease, transform 0.6s ease;
+      @keyframes fadeInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
       }
       
-      .section.visible {
+      @keyframes fadeInRight {
+        from {
+          opacity: 0;
+          transform: translateX(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      
+      @keyframes zoomIn {
+        from {
+          opacity: 0;
+          transform: scale(0.5);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      
+      /* Class untuk animasi scroll */
+      .animate-on-scroll {
+        opacity: 0;
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      /* Efek berbeda untuk tiap elemen */
+      .animate-on-scroll.animated {
         opacity: 1;
+      }
+      
+      /* Section: fade in + slide up */
+      .section.animate-on-scroll {
+        transform: translateY(40px);
+      }
+      .section.animate-on-scroll.animated {
         transform: translateY(0);
+      }
+      
+      /* Koleksi item: scale + fade */
+      .koleksi-item.animate-on-scroll {
+        transform: scale(0.9);
+      }
+      .koleksi-item.animate-on-scroll.animated {
+        transform: scale(1);
+      }
+      
+      /* Fasilitas card: fade in left dengan delay bertahap */
+      .fasilitas-card.animate-on-scroll {
+        transform: translateX(-30px);
+      }
+      .fasilitas-card.animate-on-scroll.animated {
+        transform: translateX(0);
+      }
+      
+      /* Info card: fade in right */
+      .info-card.animate-on-scroll {
+        transform: translateX(30px);
+      }
+      .info-card.animate-on-scroll.animated {
+        transform: translateX(0);
+      }
+      
+      /* Kontak item: zoom in */
+      .kontak-item.animate-on-scroll {
+        transform: scale(0.95);
+      }
+      .kontak-item.animate-on-scroll.animated {
+        transform: scale(1);
+      }
+      
+      /* Card tentang museum: fade in up */
+      .card.animate-on-scroll {
+        transform: translateY(30px);
+      }
+      .card.animate-on-scroll.animated {
+        transform: translateY(0);
+      }
+      
+      /* Testimoni: fade in dengan delay */
+      .testimoni-item.animate-on-scroll {
+        transform: scale(0.95);
+      }
+      .testimoni-item.animate-on-scroll.animated {
+        transform: scale(1);
+      }
+      
+      /* Delay berurutan untuk grid items */
+      .fasilitas-card:nth-child(1) { transition-delay: 0.05s; }
+      .fasilitas-card:nth-child(2) { transition-delay: 0.1s; }
+      .fasilitas-card:nth-child(3) { transition-delay: 0.15s; }
+      .fasilitas-card:nth-child(4) { transition-delay: 0.2s; }
+      .fasilitas-card:nth-child(5) { transition-delay: 0.25s; }
+      .fasilitas-card:nth-child(6) { transition-delay: 0.3s; }
+      
+      .koleksi-item:nth-child(1) { transition-delay: 0.05s; }
+      .koleksi-item:nth-child(2) { transition-delay: 0.1s; }
+      .koleksi-item:nth-child(3) { transition-delay: 0.15s; }
+      .koleksi-item:nth-child(4) { transition-delay: 0.2s; }
+      
+      .info-card:nth-child(1) { transition-delay: 0.05s; }
+      .info-card:nth-child(2) { transition-delay: 0.1s; }
+      .info-card:nth-child(3) { transition-delay: 0.15s; }
+      
+      /* Hover effect tambahan */
+      .koleksi-item:hover, .fasilitas-card:hover, .info-card:hover {
+        transform: translateY(-10px) !important;
+        transition: transform 0.3s ease !important;
+      }
+      
+      /* Parallax effect untuk hero */
+      .hero {
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      
+      @media (max-width: 768px) {
+        .hero {
+          background-attachment: scroll;
+        }
       }
     `;
     document.head.appendChild(style);
@@ -308,25 +455,38 @@
   
   addAnimationStyles();
 
-  // ==================== 9. SCROLL REVEAL ANIMATION ====================
-  const revealSections = () => {
-    const sections = document.querySelectorAll('.section');
-    sections.forEach(section => {
-      const sectionTop = section.getBoundingClientRect().top;
-      const windowHeight = window.innerHeight;
-      
-      if (sectionTop < windowHeight - 100) {
-        section.classList.add('visible');
-      }
-    });
-  };
+  // ==================== 10. HOVER PARALLAX UNTUK KARTU (Bonus) ====================
+  const cards = document.querySelectorAll('.koleksi-item, .fasilitas-card, .info-card');
   
-  window.addEventListener('scroll', revealSections);
-  window.addEventListener('load', revealSections);
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = (y - centerY) / 20;
+      const rotateY = (centerX - x) / 20;
+      
+      card.style.transform = `perspective(500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(500px) rotateX(0) rotateY(0) translateY(0)';
+    });
+  });
 
-  // ==================== 10. LOADING SCREEN (Opsional) ====================
+  // ==================== 11. LOADING COMPLETE ====================
   window.addEventListener('load', () => {
-    console.log('✅ Museum UPI Website Loaded Successfully!');
+    console.log('✅ Museum UPI Website Loaded - Animations Active!');
+    
+    // Tambah class ke body untuk trigger animasi awal
+    document.body.classList.add('loaded');
+    
+    // Trigger scroll reveal pertama
+    setTimeout(checkScroll, 100);
   });
 
 })();
