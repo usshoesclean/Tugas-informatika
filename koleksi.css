@@ -1,0 +1,128 @@
+/* ==================== KOLEKSI.CSS - Khusus Halaman Koleksi ==================== */
+
+/* Page Header */
+.page-header {
+  background: var(--primary);
+  color: white;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.page-header h1 {
+  color: white;
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
+}
+
+.page-header p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+}
+
+.back-button {
+  display: inline-block;
+  margin-top: 1rem;
+  color: var(--secondary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  color: white;
+  transform: translateX(-5px);
+}
+
+/* Grid Koleksi */
+.koleksi-full-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  padding: 3rem 0;
+}
+
+/* Kartu Koleksi */
+.koleksi-full-card {
+  background: var(--bg-white);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.koleksi-full-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Gambar Koleksi */
+.koleksi-full-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.koleksi-full-card:hover img {
+  transform: scale(1.05);
+}
+
+/* Konten Kartu */
+.koleksi-full-card .card-content {
+  padding: 1.5rem;
+}
+
+/* Icon */
+.koleksi-full-card .card-icon {
+  font-size: 2rem;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+}
+
+/* Judul */
+.koleksi-full-card h3 {
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  font-size: 1.2rem;
+}
+
+/* Deskripsi */
+.koleksi-full-card p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 992px) {
+  .koleksi-full-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .page-header h1 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .koleksi-full-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .page-header {
+    padding: 2.5rem 0;
+  }
+  
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .koleksi-full-card img {
+    height: 180px;
+  }
+  
+  .koleksi-full-card .card-content {
+    padding: 1rem;
+  }
+}
